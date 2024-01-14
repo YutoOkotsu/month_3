@@ -6,7 +6,10 @@ from aiogram.filters import Command
 from dotenv import load_dotenv
 from os import getenv
 import logging
-from handlers import (start_router, pic_router)
+from handlers.start import start_router
+from handlers.pic import pic_router
+from handlers.myinfo import myinfo_router
+from handlers.echo import echo_router
 
 
 load_dotenv()
@@ -14,24 +17,20 @@ TOKEN = getenv("BOT_TOKEN")
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-@dp.message(Command("myinfo"))
-async def myinfo(message: types.Message):
-    pprint(message)
-    await message.answer(f"Ваш ник: {message.from_user.full_name}Ваше id: {message.from_user.id}, Ваше имя: {message.from_user.first_name}")
 
-@dp.message()
-async def echo(message: types.Message):
-    await message.answer(message.text)
 
-async def main():
+async def set_my_commands():
     await bot.set_my_commands([
         types.BotCommand(command="start", description="Старт"),
         types.BotCommand(command="pic", description="Отправить картинку"),
         types.BotCommand(command="myinfo", description="моя информация"),
+        types.BotCommand(command="course", description="Курсы")
 
     ])
     dp.include_router(start_router)
     dp.include_router(pic_router)
+    dp.include_router(myinfo_router)
+    dp.include_router(echo_router)
 
     await dp.start_polling(bot)
 

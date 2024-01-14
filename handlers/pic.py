@@ -1,5 +1,8 @@
 from aiogram import Router, types
-from aiogram.dispatcher import Command
+from aiogram.filters import Command
+import asyncio
+import os
+import random
 
 pic_router = Router()
 
