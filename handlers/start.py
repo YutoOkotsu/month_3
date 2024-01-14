@@ -7,8 +7,6 @@ start_router = Router()
 
 @start_router.message(Command("start"))
 async def start(message: types.Message):
-    # обработка команды
-    # handler
     kb = types.InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -23,12 +21,13 @@ async def start(message: types.Message):
             ]
         ]
     )
-    # pprint(message)
+    pprint(message)
     await message.answer(f"Привет! {message.from_user.full_name}", reply_markup=kb)
 
 
-@start_router.callback_query(f.data == "about_us")
+@start_router.callback_query(F.data == "about_us")
 async def about_us(callback: types.CallbackQuery):
     await callback.answer()
 
     await callback.message.answer("Здесь мы хотим рассказать о нашей компании")
+
