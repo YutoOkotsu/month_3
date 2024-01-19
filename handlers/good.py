@@ -15,28 +15,6 @@ class Good(StatesGroup):
     favorite_anime = State()
 
 
-# @good_router.message(Command('janr'))
-# def janr():
-#     # DRY Don't Repeat Yourself
-#     kb = types.ReplyKeyboardMarkup(
-#         keyboard=[
-#             [
-#                 types.KeyboardButton(text="Аниме"),
-#                 types.KeyboardButton(text="Книги")
-#             ],
-#             [
-#                 types.KeyboardButton(text="Фильмы"),
-#                 types.KeyboardButton(text="Сериалы")
-#             ],
-#             [
-#                 types.KeyboardButton(text="Косметика"),
-#                 types.KeyboardButton(text="Манги")
-#             ]
-#         ]
-#     )
-#     return kb
-
-
 @good_router.message(Command("anime"))
 async def start_registration(message: types.Message, state: FSMContext):
     await state.set_state(Good.name)
@@ -53,13 +31,17 @@ async def cancel_registration(message: types.Message, state: FSMContext):
 
 @good_router.message(Good.name)
 async def process_name(message: types.Message, state: FSMContext):
-    await state.update_data(name=message.text)
-    await state.set_state(Good.age)
-    await message.answer("Сколько Вам лет?")
+    if not message.text.isalpha():
+        await message.answer("В имени не могут быть цифры!")
+    else :
+        await state.update_data(name=message.text)
+        await state.set_state(Good.age)
+        await message.answer("Сколько Вам лет?")
 
 
 @good_router.message(Good.age)
 async def process_age(message: types.Message, state: FSMContext):
+    print("ggfgg")
     if not message.text.isdigit():
         await message.answer("Возраст должен быть числом")
     elif int(message.text) < 12 or int(message.text) > 80:
@@ -68,17 +50,19 @@ async def process_age(message: types.Message, state: FSMContext):
         age = int(message.text)
         await state.update_data(age=age)
         await state.set_state(Good.favorite_anime)
+        await message.answer ("Какое ваше любимое аниме?")
 
 
 @good_router.message(Good.favorite_anime)
 async def process_favorite_anime(message: types.Message, state: FSMContext):
     await state.update_data(favorite_anime=message.text)
     await state.set_state(Good.janr)
-    await message.answer("Какое ваше любимое аниме")
+    await message.answer("Какой ваш любимый жанр?")
 
 
 @good_router.message(Good.janr)
 async def process_janr(message: types.Message, state: FSMContext):
     await state.update_data(janr=message.text)
-    await state.set_state(Good.favorite_anime)
-    await message.answer("Ваш номер телефона?")
+    await state.clear()
+    await message.answer("Ваш любимый персонаж?")
+
