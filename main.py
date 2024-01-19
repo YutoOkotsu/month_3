@@ -1,35 +1,27 @@
 import asyncio
-import os
-import random
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters import Command
-from dotenv import load_dotenv
-from os import getenv
+from aiogram import types
 import logging
-from handlers.start import start_router
-from handlers.pic import pic_router
-from handlers.myinfo import myinfo_router
-from handlers.echo import echo_router
-
-
-load_dotenv()
-TOKEN = getenv("BOT_TOKEN")
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
-
-
+from bot import bot, dp
+from handlers import (pic_router,
+                      site_router,
+                      start_router,
+                      echo_router,
+                      myinfo_router,
+                      good_router)
 
 async def main():
     await bot.set_my_commands([
         types.BotCommand(command="start", description="Старт"),
         types.BotCommand(command="pic", description="Отправить картинку"),
         types.BotCommand(command="myinfo", description="моя информация"),
-        types.BotCommand(command="course", description="Курсы")
+        types.BotCommand(command="anime", description="Аниме")
 
     ])
     dp.include_router(start_router)
     dp.include_router(pic_router)
     dp.include_router(myinfo_router)
+    dp.include_router(site_router)
+    dp.include_router(good_router)
     dp.include_router(echo_router)
 
     await dp.start_polling(bot)

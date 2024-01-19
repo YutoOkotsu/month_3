@@ -1,6 +1,5 @@
 from aiogram import Router, types
 from aiogram.filters import Command
-import asyncio
 import os
 import random
 
