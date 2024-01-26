@@ -11,7 +11,6 @@ class Good(StatesGroup):
     name = State()
     age = State()
     janr = State()
-    # phone = State()
     favorite_anime = State()
 
 
