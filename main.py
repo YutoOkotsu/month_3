@@ -3,7 +3,8 @@ import logging
 from aiogram import types
 
 from bot import bot, dp
-from handlers import (
+from handlers import (myinfo_router,
+                      pic_router,
                       start_router,
                       echo_router,
                       good_router)
@@ -22,10 +23,14 @@ async def main():
     await bot.set_my_commands([
         types.BotCommand(command="start", description="Старт"),
         types.BotCommand(command="anime", description="Аниме"),
+        types.BotCommand(command="pic", description="Картинка"),
+        types.BotCommand(command="myinfo", description="Информация")
     ])
 
     dp.include_router(start_router)
     dp.include_router(good_router)
+    dp.include_router(pic_router)
+    dp.include_router(myinfo_router)
     dp.include_router(chel_router)
     dp.include_router(echo_router)
 
