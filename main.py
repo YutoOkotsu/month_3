@@ -1,14 +1,14 @@
 import asyncio
 import logging
 from aiogram import types
-
 from bot import bot, dp
-from handlers import (myinfo_router,
-                      pic_router,
+from db.chel import chel_router
+from House.house import parser_router
+from handlers import (
                       start_router,
+                      scheduler_router,
                       echo_router,
                       good_router)
-from db import chel_router
 from db.ani import init_db, create_tables, populate_db
 
 
@@ -22,16 +22,15 @@ async def on_startup():
 async def main():
     await bot.set_my_commands([
         types.BotCommand(command="start", description="Старт"),
-        types.BotCommand(command="anime", description="Аниме"),
-        types.BotCommand(command="pic", description="Картинка"),
-        types.BotCommand(command="myinfo", description="Информация")
+        types.BotCommand(command="Opros", description="Опрос"),
+        types.BotCommand(command="catalog", description="Каталог")
     ])
 
     dp.include_router(start_router)
     dp.include_router(good_router)
-    dp.include_router(pic_router)
-    dp.include_router(myinfo_router)
     dp.include_router(chel_router)
+    dp.include_router(scheduler_router)
+    dp.include_router(parser_router)
     dp.include_router(echo_router)
 
     dp.startup.register(on_startup)
@@ -39,5 +38,5 @@ async def main():
 
 
 if __name__ == '__main__':
-        logging.basicConfig(level=logging.INFO)
-        asyncio.run(main())
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(main())

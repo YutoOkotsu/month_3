@@ -2,6 +2,8 @@ from aiogram import types, Router, F
 from db.ani import get_products_by_cat, get_products
 
 chel_router = Router()
+
+
 @chel_router.callback_query(F.data == 'shop')
 async def products(call: types.CallbackQuery):
     kb = types.InlineKeyboardMarkup(
@@ -21,12 +23,14 @@ async def book(call: types.CallbackQuery):
         await call.message.answer(f'название {product[1]}\n'
                                   f'цена {product[2]}')
 
+
 @chel_router.callback_query(F.data == 'comics')
 async def comics(call: types.CallbackQuery):
-    pro = get_products_by_anime(2)
+    pro = get_products_by_cat(2)
     for product in pro:
         await call.message.answer(f'название {product[1]}\n'
                                   f'цена {product[2]}')
+
 
 @chel_router.callback_query(F.data == 'manga')
 async def manga(call: types.CallbackQuery):
@@ -34,6 +38,7 @@ async def manga(call: types.CallbackQuery):
     for product in pro:
         await call.message.answer(f'название {product[1]}\n'
                                   f'цена {product[2]}')
+
 
 @chel_router.callback_query(F.data == 'all')
 async def product(call: types.CallbackQuery):

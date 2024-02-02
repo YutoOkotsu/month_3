@@ -1,5 +1,6 @@
 import sqlite3
 from pathlib import Path
+from pprint import pprint
 
 
 def init_db():
@@ -11,6 +12,7 @@ def init_db():
         Path(__file__).parent.parent / "db.sqlite"
     )
     cursor = db.cursor()
+
 
 def create_tables():
     cursor.execute("""
@@ -37,6 +39,7 @@ def create_tables():
         );
     """)
     db.commit()
+
 
 def populate_db():
     """
@@ -65,6 +68,7 @@ def populate_db():
     )
     db.commit()
 
+
 def get_products():
 
     cursor.execute("""
@@ -72,17 +76,29 @@ def get_products():
     """)
     return cursor.fetchall()
 
+
 def get_product(id):
     cursor.execute("""
         SELECT * FROM product WHERE id= :cid
     """, {"cid": id})
     return cursor.fetchone()
 
+
 def get_products_by_cat(id):
     cursor.execute("""
         SELECT * FROM product WHERE cat = :cid
     """, {"cid": id})
     return cursor.fetchall()
+
+
+def save_good_data(data: dict):
+    cursor.execute(""" 
+        --sql 
+        INSERT INTO free_lesson (name, age, favorite_anime, janr) VALUES 
+        (:name, :age, :favorite_anime, :janr) 
+    """, data)
+    db.commit()
+
 
 if __name__ == '__main__':
     init_db()
