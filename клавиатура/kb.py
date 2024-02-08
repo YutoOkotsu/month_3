@@ -1,7 +1,6 @@
 from aiogram import types
 
 
-
 def janr_kb():
     kb = types.ReplyKeyboardMarkup(
         keyboard=[

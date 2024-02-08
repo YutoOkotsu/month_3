@@ -8,6 +8,8 @@ from клавиатура.kb import janr_kb
 good_router = Router()
 # FSM - Finite State Machine
 # Конечный автомат
+
+
 class Good(StatesGroup):
     name = State()
     age = State()
@@ -15,7 +17,7 @@ class Good(StatesGroup):
     favorite_anime = State()
 
 
-@good_router.message(Command("Опрос"))
+@good_router.message(Command("fuck"))
 async def start_registration(message: types.Message, state: FSMContext):
     await state.set_state(Good.name)
     await message.answer("Предлагаем Вам пройти опрос!Можете остановить опрос командой /cancel")

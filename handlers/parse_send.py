@@ -10,14 +10,11 @@ async def process_notify(message: types.Message):
     scheduler.add_job(
         send_notification,
         "interval",
-        seconds=5,
+        seconds=2,
         kwargs={"chat_id": message.from_user.id,
                 'text': message.text.replace('напомни ', "")},
     )
     await message.answer("Напоминание добавлено")
-
-# напомни сходить в магазин
-# напомни сделать ДЗ
 
 
 async def send_notification(chat_id, text):
